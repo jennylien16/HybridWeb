@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;          // ★ 重要：為了 GetRequiredService / CreateScope
 using WebApp.Data;
+using System.Text.RegularExpressions; // 檔案頂端補這行
 
 namespace WebApp.Services;
 
@@ -91,10 +92,13 @@ public class StaticExporter
     {
         if (string.IsNullOrEmpty(basePath)) return html;
 
-        // 調整 <base href="/{culture}/"> → "/{repo}/{culture}/"
-        html = html.Replace($"<base href=\"/{culture}/\">", $"<base href=\"{basePath}/{culture}/\">");
+        // 1) 強韌地替換 <base href="/zh-TW/">（容忍空白、單/雙引號、自閉合）
+        var pattern = new Regex(
+            $@"<base\s+href\s*=\s*(['""])/{Regex.Escape(culture)}/\1\s*/?>",
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        html = pattern.Replace(html, $@"<base href=""{basePath}/{culture}/"">");
 
-        // 調整資源：/wwwroot/... → /{repo}/wwwroot/...
+        // 2) 靜態資源：/wwwroot/... -> /{repo}/wwwroot/...
         html = html.Replace("href=\"/wwwroot/", $"href=\"{basePath}/wwwroot/");
         html = html.Replace("src=\"/wwwroot/", $"src=\"{basePath}/wwwroot/");
 
