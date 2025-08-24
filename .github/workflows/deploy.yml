@@ -1,7 +1,7 @@
 name: Export & Deploy to Pages
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 permissions:
   contents: write
 jobs:
@@ -11,12 +11,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.x"
+          dotnet-version: '9.0.x'
       - name: Restore & Build
         run: |
           dotnet restore ./WebApp/WebApp.csproj
           dotnet build ./WebApp/WebApp.csproj -c Release
       - name: Export Static Site
+        env:
+          BASE_PATH: "/${{ github.event.repository.name }}"
+          DEFAULT_CULTURE: "zh-TW"
         run: |
           cd WebApp
           dotnet run -- --export
