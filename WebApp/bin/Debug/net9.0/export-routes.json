@@ -1,0 +1,10 @@
+{
+    "cultures": [
+        "zh-TW",
+        "en-US"
+    ],
+    "paths": [
+        "/",
+        "/News"
+    ]
+}

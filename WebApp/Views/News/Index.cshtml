@@ -1,0 +1,16 @@
+@model IEnumerable<WebApp.Models.News>
+@{
+    ViewData["Title"] = "最新消息";
+}
+<div class="container py-4">
+    <h1 class="mb-3">最新消息</h1>
+    <ul class="list-group">
+        @foreach (var n in Model)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="News/Detail/@n.Slug">@n.Title</a>
+                <span class="text-secondary small">@n.CreatedAt.LocalDateTime.ToString("yyyy-MM-dd HH:mm")</span>
+            </li>
+        }
+    </ul>
+</div>

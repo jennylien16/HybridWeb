@@ -1,0 +1,10 @@
+@model WebApp.Models.News
+@{
+ViewData["Title"] = Model.Title;
+}
+<div class="container py-4">
+<a class="btn btn-link" href="News">← 回列表</a>
+<h1 class="mt-2">@Model.Title</h1>
+<div class="text-secondary small mb-3">@Model.CreatedAt.LocalDateTime:yyyy-MM-dd HH:mm</div>
+<article>@Html.Raw(Model.Html)</article>
+</div>

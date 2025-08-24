@@ -1,0 +1,22 @@
+﻿@model IEnumerable<WebApp.Models.News>
+@{
+    ViewData["Title"] = "首頁";
+}
+<div class="container py-4">
+    <h1 class="mb-3">Hybrid MVC × Export</h1>
+    <p class="text-secondary">這是首頁，下面顯示最新消息（示範資料）。</p>
+    <div class="row g-3">
+        @foreach (var n in Model)
+        {
+            <div class="col-12 col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@n.Title</h5>
+                        <div class="card-text">@Html.Raw(n.Html)</div>
+                        <a class="btn btn-sm btn-outline-primary mt-2" href="News/Detail/@n.Slug">閱讀</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

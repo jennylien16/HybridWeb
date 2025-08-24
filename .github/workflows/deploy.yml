@@ -1,0 +1,28 @@
+name: Export & Deploy to Pages
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  build-export-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+      - name: Restore & Build
+        run: |
+          dotnet restore ./WebApp/WebApp.csproj
+          dotnet build ./WebApp/WebApp.csproj -c Release
+      - name: Export Static Site
+        run: |
+          cd WebApp
+          dotnet run -- --export
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist-static
+          publish_branch: gh-pages
